@@ -7,21 +7,19 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-class Category(Base):
+class Origin(Base):
 
-    __tablename__ = 'category'
+    __tablename__ = 'origin'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
 
-class Item(Base):
-    __tablename__ = 'name'
+class Coffee(Base):
+    __tablename__ = 'coffee'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(250))
-    category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Category)
+    category_id = Column(Integer, ForeignKey('origin.id'))
+    coffee = relationship(Coffee)
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
-
-
+engine = create_engine('sqlite:///coffee.db')
 Base.metadata.create_all(engine)
