@@ -20,3 +20,15 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+@app.route('/')
+@app.route('/home')
+def showHomePage():
+    origins = session.query(Origin).all()
+    coffees = session.query(Coffee).all()
+    return render_template('main.html', origins=origins, coffees=coffees)
+
+if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
