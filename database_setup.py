@@ -19,7 +19,7 @@ class Coffee(Base):
     name = Column(String(250), nullable=False)
     description = Column(String(250))
     category_id = Column(Integer, ForeignKey('origin.id'))
-    coffee = relationship(Coffee)
+    origin = relationship(Origin)
 
 engine = create_engine('sqlite:///coffee.db')
 Base.metadata.create_all(engine)
