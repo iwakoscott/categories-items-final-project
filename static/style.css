@@ -1,0 +1,42 @@
+
+* {
+  box-sizing: border-box;
+}
+
+header {
+  border-width: medium;
+  border-style: dotted;
+  text-align: center;
+}
+
+.content {
+  margin-left: 15em;
+  margin-right: 15em;
+  background-color: #eaddb2;
+  border-radius: 25px;
+  box-shadow: 5px 5px 5px grey;
+}
+
+ul {
+  list-style-type: none;
+}
+
+header, h1, h2 {
+  font-family: 'Pompiere', cursive;
+}
+
+a, .coffee-description {
+  font-family: 'NTR', sans-serif;
+}
+
+.sub-header {
+  text-align: center;
+}
+
+.main-button {
+  text-align: center;
+}
+
+.back-button {
+  margin: 25px;
+}

@@ -37,6 +37,40 @@ def addOrigin():
         return redirect(url_for('showHomePage'))
     return render_template('add-origin.html')
 
+@app.route('/show-origin/<int:origin_id>', methods=['GET', 'POST'])
+def showOrigin(origin_id):
+    origin = session.query(Origin).filter_by(id=origin_id).one()
+    coffees = session.query(Coffee).filter_by(origin_id=origin_id).order_by('name').all()
+    if request.method == 'POST':
+        pass
+    return render_template('show-origin.html', origin=origin, coffees=coffees)
+
+@app.route('/add-coffee-from/<int:origin_id>', methods=['GET', 'POST'])
+def addCoffeeFrom(origin_id):
+    origin = session.query(Origin).filter_by(id=origin_id).one()
+    if request.method == 'POST':
+        newCoffee = Coffee(name=request.form['new-coffee'],
+                            description=request.form['coffee-description'],
+                            origin_id=origin_id)
+        session.add(newCoffee)
+        session.commit()
+        return redirect(url_for('showOrigin', origin_id=origin_id))
+    return render_template('add-coffee-from.html', origin=origin)
+
+@app.route('/add-coffee', methods=['GET', 'POST'])
+def addCoffee():
+    origins = session.query(Origin).all()
+    if request.method == 'POST':
+        origin = session.query(Origin).filter_by(
+            name=request.form['selected-origin']).one()
+        newCoffee = Coffee(name=request.form['new-coffee'],
+                            description=request.form['coffee-description'],
+                            origin_id=origin.id)
+        session.add(newCoffee)
+        session.commit()
+        return redirect(url_for('showHomePage'))
+    return render_template('add-coffee.html', origins=origins)
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True

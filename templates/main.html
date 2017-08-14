@@ -3,29 +3,32 @@
   <head>
     {% block head %}
     <title> {% block title %}{% endblock%} | Coffee App</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <link href="https://fonts.googleapis.com/css?family=Pompiere" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=NTR" rel="stylesheet">
     {% endblock %}
   </head>
   <body>
 
     <header>
-      <h1 class="main-title-heading">Coffee App</h1>
+      <h1 class="main-title-heading">The Coffee App</h1>
     </header>
 
     <section class="content">
       {% block content %}
       <section class="coffee-origin">
-        <h2>Coffee Origin</h2>
-        <a href="{{ url_for('addOrigin') }}"><h3>Add Coffee Origin</h3></a>
+        <h2 class="sub-header">Coffee Origin</h2>
+        <a href="{{ url_for('addOrigin') }}" class="main-button"><h3>Add Coffee Origin</h3></a>
         <ul>
           {% for origin in origins %}
-          <li><a href="">{{ origin.name }}</a></li>
+          <li><a href="{{ url_for('showOrigin', origin_id=origin.id) }}">{{ origin.name }}</a></li>
           {% endfor %}
         </ul>
       </section>
 
        <section class="coffee">
-         <h2>Coffee</h2>
-         <a href=""><h3>Add Coffee</h3></a>
+         <h2 class="sub-header">Coffee</h2>
+         <a href="{{url_for('addCoffee')}}" class="main-button"><h3>Add Coffee</h3></a>
          <ul>
            {% for coffee in coffees %}
            <li><a href="">{{ coffee.name }}</a></li>

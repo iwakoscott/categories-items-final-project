@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% block title %}{{ origin.name }}{% endblock %}
+
+{% block content %}
+<h2 class="sub-header">{{ origin.name }}</h2>
+<ul>
+  {% for coffee in coffees %}
+  <li><h2>{{ coffee.name }}</h2></li>
+    <p class="coffee-description">
+      {{coffee.description}}
+    </p>
+  <a href="">edit</a> | <a href="">delete</a>
+  {% endfor %}
+</ul>
+<a href="{{ url_for('addCoffeeFrom', origin_id=origin.id) }}" class="main-button"><h3>Add a Coffee</h3></a>
+<a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+{% endblock %}

@@ -18,7 +18,7 @@ class Coffee(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(250))
-    category_id = Column(Integer, ForeignKey('origin.id'))
+    origin_id = Column(Integer, ForeignKey('origin.id'))
     origin = relationship(Origin)
 
 engine = create_engine('sqlite:///coffee.db')
