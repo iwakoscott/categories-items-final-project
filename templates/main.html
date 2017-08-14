@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Home</title>
+    {% block head %}
+    <title> {% block title %}{% endblock%} | Coffee App</title>
+    {% endblock %}
   </head>
   <body>
 
@@ -9,24 +11,28 @@
       <h1 class="main-title-heading">Coffee App</h1>
     </header>
 
-    <section class="coffee-origin">
-      <h2>Coffee Origin</h2>
-      <a href=""><h3>Add Coffee Origin</h3></a>
-      <ul>
-        {% for origin in origins %}
-        <li><a href="">{{ origin.name }}</a></li>
-        {% endfor %}
-      </ul>
-    </section>
+    <section class="content">
+      {% block content %}
+      <section class="coffee-origin">
+        <h2>Coffee Origin</h2>
+        <a href="{{ url_for('addOrigin') }}"><h3>Add Coffee Origin</h3></a>
+        <ul>
+          {% for origin in origins %}
+          <li><a href="">{{ origin.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
 
-     <section class="coffee">
-       <h2>Coffee</h2>
-       <a href=""><h3>Add Coffee</h3></a>
-       <ul>
-         {% for coffee in coffees %}
-         <li><a href="">{{ coffee.name }}</a></li>
-         {% endfor %}
-       </ul>
-     </section>
+       <section class="coffee">
+         <h2>Coffee</h2>
+         <a href=""><h3>Add Coffee</h3></a>
+         <ul>
+           {% for coffee in coffees %}
+           <li><a href="">{{ coffee.name }}</a></li>
+           {% endfor %}
+         </ul>
+       </section>
+       {% endblock %}
+    </section>
   </body>
 </html>

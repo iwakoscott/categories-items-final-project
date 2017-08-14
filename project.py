@@ -24,9 +24,18 @@ session = DBSession()
 @app.route('/')
 @app.route('/home')
 def showHomePage():
-    origins = session.query(Origin).all()
-    coffees = session.query(Coffee).all()
+    origins = session.query(Origin).order_by('name').all()
+    coffees = session.query(Coffee).order_by('name').all()
     return render_template('main.html', origins=origins, coffees=coffees)
+
+@app.route('/add-origin', methods=['GET', 'POST'])
+def addOrigin():
+    if request.method == 'POST':
+        newOrigin = Origin(name=request.form['new-origin'])
+        session.add(newOrigin)
+        session.commit()
+        return redirect(url_for('showHomePage'))
+    return render_template('add-origin.html')
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

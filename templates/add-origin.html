@@ -1,0 +1,10 @@
+{% extends "main.html" %}
+{% block title %}Add Origin {% endblock %}
+
+{% block content %}
+<h2>Add an Origin</h2>
+<form action='{{ url_for('addOrigin') }}' method="post">
+  <input type="text" name="new-origin" placeholder="Kenya"/>
+  <input type="submit" value="Add New Origin"/>
+</form>
+{% endblock %}
