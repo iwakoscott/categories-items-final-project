@@ -1,5 +1,5 @@
 {% extends "main.html" %}
-{% block title %}Add Origin {% endblock %}
+{% block title %}Add a Coffee{% endblock %}
 
 {% block content %}
 <h1>Add a Coffee</h1>
@@ -18,4 +18,5 @@
   <br>
   <input type="submit" value="Add New Origin"/>
 </form>
+<a href="{{url_for('showHomePage')}}" class="back-button">back</a>
 {% endblock %}

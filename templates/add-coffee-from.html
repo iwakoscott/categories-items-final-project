@@ -1,5 +1,5 @@
 {% extends "main.html" %}
-{% block title %}Add Origin {% endblock %}
+{% block title %}Add a Coffee from {{ origin.name }} {% endblock %}
 
 {% block content %}
 <h1>Add a Coffee From {{ origin.name }}</h1>
@@ -11,4 +11,5 @@
   <br>
   <input type="submit" value="Add New Origin"/>
 </form>
+<a href="{{url_for('showOrigin', origin_id=origin.id)}}" class="back-button">back</a>
 {% endblock %}

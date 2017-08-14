@@ -31,10 +31,15 @@ def showHomePage():
 @app.route('/add-origin', methods=['GET', 'POST'])
 def addOrigin():
     if request.method == 'POST':
-        newOrigin = Origin(name=request.form['new-origin'])
-        session.add(newOrigin)
-        session.commit()
-        return redirect(url_for('showHomePage'))
+        new_origin = request.form['new-origin'].title()
+        try:
+            session.query(Origin).filter_by(name=new_origin).one()
+            return redirect(url_for('showHomePage'))
+        except:
+            newOrigin = Origin(name=new_origin)
+            session.add(newOrigin)
+            session.commit()
+            return redirect(url_for('showHomePage'))
     return render_template('add-origin.html')
 
 @app.route('/show-origin/<int:origin_id>', methods=['GET', 'POST'])
@@ -49,12 +54,18 @@ def showOrigin(origin_id):
 def addCoffeeFrom(origin_id):
     origin = session.query(Origin).filter_by(id=origin_id).one()
     if request.method == 'POST':
-        newCoffee = Coffee(name=request.form['new-coffee'],
-                            description=request.form['coffee-description'],
-                            origin_id=origin_id)
-        session.add(newCoffee)
-        session.commit()
-        return redirect(url_for('showOrigin', origin_id=origin_id))
+        try:
+            session.query(Coffee).filter_by(origin_id=origin_id,
+                                            name=request.form['new-coffee'])
+            return redirect(url_for('showOrigin', origin_id=origin_id))
+        except:
+            newCoffee = Coffee(name=request.form['new-coffee'],
+                                description=request.form['coffee-description'],
+                                origin_id=origin_id)
+            session.add(newCoffee)
+            session.commit()
+            return redirect(url_for('showOrigin', origin_id=origin_id))
+
     return render_template('add-coffee-from.html', origin=origin)
 
 @app.route('/add-coffee', methods=['GET', 'POST'])
