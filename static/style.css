@@ -84,3 +84,14 @@ body {
 .delete-button {
   text-align: center;
 }
+
+input[type=submit] {
+    padding:5px 15px;
+    background: #d1c49c;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px grey;
+    font-family: 'Bungee Inline', cursive;
+}
