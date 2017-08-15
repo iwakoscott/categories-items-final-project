@@ -4,17 +4,21 @@
 }
 
 header {
-  border-width: medium;
-  border-style: dotted;
-  text-align: center;
+  background-color:  #eaddb2;
+  box-shadow: 5px 5px 5px grey;
+  border-radius: 15px;
 }
 
 .content {
-  margin-left: 15em;
-  margin-right: 15em;
+  margin-left: 10em;
+  margin-right: 10em;
   background-color: #eaddb2;
   border-radius: 25px;
   box-shadow: 5px 5px 5px grey;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-width: 75%;
 }
 
 ul {
@@ -22,11 +26,11 @@ ul {
 }
 
 header, h1, h2 {
-  font-family: 'Pompiere', cursive;
+  font-family: 'Bungee Inline', cursive;
 }
 
 a, .coffee-description {
-  font-family: 'NTR', sans-serif;
+  font-family: 'Comfortaa', cursive;
 }
 
 .sub-header {
@@ -38,5 +42,41 @@ a, .coffee-description {
 }
 
 .back-button {
-  margin: 15px;
+  margin: 20px;
+  position: relative;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+.login-button {
+  text-align: center;
+  width: 300px;
+  margin-left: auto;
+  margin-bottom: auto;
+}
+
+.main-title-heading {
+  width: 300px;
+  text-align: center;
+}
+
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.main-title-heading, .login-button {
+  display: block;
+  border-radius: 25px;
+  position: relative;
+  opacity: 50%;
+}
+
+.login-link, .logo-link {
+  text-decoration: none;
+  color: black;
 }

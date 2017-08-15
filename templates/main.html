@@ -6,18 +6,26 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
     <link href="https://fonts.googleapis.com/css?family=Pompiere" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=NTR" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     {% endblock %}
   </head>
   <body>
 
     <header>
-      <h1 class="main-title-heading">The Coffee App</h1>
+      <ul class="nav-bar">
+        <li class="main-title-heading">
+          <a class="logo-link" href="{{url_for('showHomePage')}}"><h1>The Coffee App</h2></a>
+        </li>
+        <li class="login-button">
+          <a href="" class="login-link"><h2>Login</h2></a>
+        </li>
+      </ul>
     </header>
-
     <section class="content">
       {% block content %}
       <section class="coffee-origin">
-        <h2 class="sub-header">Coffee Origin</h2>
+        <h2 class="sub-header">Coffee Origins</h2>
         <a href="{{ url_for('addOrigin') }}" class="main-button"><h3>Add Coffee Origin</h3></a>
         <ul>
           {% for origin in origins %}
@@ -27,11 +35,11 @@
       </section>
 
        <section class="coffee">
-         <h2 class="sub-header">Coffee</h2>
+         <h2 class="sub-header">Coffees</h2>
          <a href="{{url_for('addCoffee')}}" class="main-button"><h3>Add Coffee</h3></a>
          <ul>
            {% for coffee in coffees %}
-           <li><a href="">{{ coffee.name }}</a></li>
+           <li><a href="{{ url_for('showCoffee', coffee_id=coffee.id) }}">{{ coffee.name }}</a></li>
            {% endfor %}
          </ul>
        </section>
