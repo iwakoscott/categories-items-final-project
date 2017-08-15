@@ -90,7 +90,23 @@ def showCoffee(coffee_id):
     origin = session.query(Origin).filter_by(id=coffee.origin_id).one()
     return render_template('show-coffee.html', coffee=coffee, origin=origin)
 
+@app.route('/delete-coffee-from-list/<int:coffee_id>', methods=['GET', 'POST'])
+def deleteCoffee(coffee_id):
+    coffee = session.query(Coffee).filter_by(id=coffee_id).one()
+    if request.method == 'POST':
+        session.delete(coffee)
+        session.commit()
+        return redirect(url_for('showOrigin', origin_id=coffee.origin_id))
+    return render_template('delete-coffee-from-list.html', coffee=coffee)
 
+@app.route('/delete-coffee/<int:coffee_id>', methods=['GET', 'POST'])
+def deleteCoffeeToHome(coffee_id):
+    coffee = session.query(Coffee).filter_by(id=coffee_id).one()
+    if request.method == 'POST':
+        session.delete(coffee)
+        session.commit()
+        return redirect(url_for('showHomePage'))
+    return render_template('delete-coffee.html', coffee=coffee)
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

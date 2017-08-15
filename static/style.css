@@ -80,3 +80,7 @@ body {
   text-decoration: none;
   color: black;
 }
+
+.delete-button {
+  text-align: center;
+}
