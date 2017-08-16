@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+{% block title %}Edit {{coffee.name}} {% endblock %}
+
+{% block content %}
+<h2 class="sub-header">Edit {{coffee.name}} ({{origin.name}})</h2>
+<form action='{{ url_for('editCoffee', coffee_id=coffee.id) }}' method="post">
+  <h2>Edit Name: </h2>
+  <input type="text" name="edit-coffee" placeholder="{{coffee.name}}"/>
+  <h2>Edit description: </h2>
+  <textarea name="new-coffee-description" cols="50" rows="10" placeholder="{{coffee.description}}"></textarea>
+  <br>
+  <input type="submit" value="edit"/>
+</form>
+<br />
+<a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+{% endblock %}

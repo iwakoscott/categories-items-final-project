@@ -108,6 +108,52 @@ def deleteCoffeeToHome(coffee_id):
         return redirect(url_for('showHomePage'))
     return render_template('delete-coffee.html', coffee=coffee)
 
+@app.route('/edit-coffee/<int:coffee_id>', methods=['GET', 'POST'])
+def editCoffee(coffee_id):
+    coffee = session.query(Coffee).filter_by(id=coffee_id).one()
+    origin = session.query(Origin).filter_by(id=coffee.origin_id).one()
+    if request.method == 'POST':
+        new_name = request.form['edit-coffee']
+        new_descript = request.form['new-coffee-description']
+        if new_name:
+            coffee.name = new_name
+        if new_descript:
+            coffee.description = new_descript
+        return redirect(url_for('showOrigin', origin_id=origin.id))
+    return render_template('edit-coffee.html', coffee=coffee, origin=origin)
+
+@app.route('/edit-single-coffee/<int:coffee_id>', methods=['GET', 'POST'])
+def editSingleCoffee(coffee_id):
+    coffee = session.query(Coffee).filter_by(id=coffee_id).one()
+    origin = session.query(Origin).filter_by(id=coffee.origin_id).one()
+    if request.method == 'POST':
+        coffee.name = request.form['edit-coffee']
+        session.commit()
+        return redirect(url_for('showCoffee', coffee_id=coffee.id))
+    return render_template('edit-coffee.html', coffee=coffee, origin=origin)
+
+@app.route('/delete-origin/<int:origin_id>', methods=['GET', 'POST'])
+def deleteOrigin(origin_id):
+    origin = session.query(Origin).filter_by(id=origin_id).one()
+    coffees = session.query(Coffee).filter_by(origin_id=origin_id).all()
+    if request.method == 'POST':
+        session.delete(origin)
+        for coffee in coffees:
+            session.delete(coffee)
+        session.commit()
+        return redirect(url_for('showHomePage'))
+    return render_template('delete-origin.html', origin=origin, coffees=coffees)
+
+@app.route('/edit-origin-name/<int:origin_id>', methods=['GET', 'POST'])
+def editOriginName(origin_id):
+    origin = session.query(Origin).filter_by(id=origin_id).one()
+    if request.method == 'POST':
+        origin.name = request.form['origin-edit']
+        session.commit()
+        return redirect(url_for('showOrigin', origin_id=origin.id))
+    return render_template('edit-origin.html', origin=origin)
+
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True

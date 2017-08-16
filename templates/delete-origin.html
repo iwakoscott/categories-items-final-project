@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% block title %} Delete {{ origin.name }}?{% endblock %}
+
+{% block content %}
+<h2 class="sub-header">Deleting {{ origin.name }} and the following coffees:</h2>
+<ul>
+  {% for coffee in coffees %}
+  <li><h4>{{ coffee.name }}</h4></li>
+  {% endfor %}
+</ul>
+
+<form action="" method="post">
+  <input type="submit" value="confirm deletion"/>
+</form>
+<br />
+<footer class="block">
+    <a href="{{ url_for('showOrigin', origin_id=origin.id) }}" class="back-button">back</a>
+</footer>
+
+{% endblock %}

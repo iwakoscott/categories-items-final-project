@@ -9,9 +9,15 @@
     <p class="coffee-description">
       {{coffee.description}}
     </p>
-  <a href="">edit</a> | <a href="{{url_for('deleteCoffee', coffee_id=coffee.id)}}">delete</a>
+  <a href="{{ url_for('editCoffee', coffee_id=coffee.id) }}">edit</a> | <a href="{{url_for('deleteCoffee', coffee_id=coffee.id)}}">delete</a>
   {% endfor %}
 </ul>
 <a href="{{ url_for('addCoffeeFrom', origin_id=origin.id) }}" class="main-button"><h3>Add a Coffee</h3></a>
-<a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+
+<footer class="block">
+    <a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+    <a href="{{ url_for('deleteOrigin', origin_id=origin.id) }}" class="button">delete origin</a>
+    <a href="{{ url_for('editOriginName', origin_id=origin.id) }}">edit origin name</a>
+</footer>
+
 {% endblock %}

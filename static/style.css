@@ -10,22 +10,23 @@ header {
 }
 
 .content {
-  margin-left: 10em;
-  margin-right: 10em;
+  margin-left: 10%;
+  margin-right: 10%;
   background-color: #eaddb2;
   border-radius: 25px;
   box-shadow: 5px 5px 5px grey;
-  padding: 15px;
+  padding: 5px;
   margin-top: 20px;
   margin-bottom: 20px;
-  min-width: 75%;
+  min-width: 400px;
+  max-width: 95%;
 }
 
 ul {
   list-style-type: none;
 }
 
-header, h1, h2 {
+header, h1, h2, h4 {
   font-family: 'Bungee Inline', cursive;
 }
 
@@ -41,8 +42,8 @@ a, .coffee-description {
   text-align: center;
 }
 
-.back-button {
-  margin: 20px;
+.back-button, .button {
+  margin: 15px;
   position: relative;
 }
 
@@ -94,4 +95,14 @@ input[type=submit] {
     border-radius: 5px;
     box-shadow: 5px 5px 5px grey;
     font-family: 'Bungee Inline', cursive;
+}
+
+.block {
+  display: inline-block;
+  vertical-align: top;
+}
+
+a {
+  text-decoration: none;
+  color: #2063bc;
 }
