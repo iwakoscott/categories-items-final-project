@@ -48,8 +48,8 @@ def addOrigin():
 @app.route('/show-origin/<int:origin_id>/coffees', methods=['GET', 'POST'])
 def showCoffeeFrom(origin_id):
     origin = session.query(Origin).filter_by(id=origin_id).one()
-    coffees = session.query(Coffee).filter_by(origin_id=origin_id
-        ).order_by('name').all()
+    coffees_query = session.query(Coffee).filter_by(origin_id=origin_id)
+    coffees = coffees_query.order_by('name').all()
     if request.method == 'POST':
         pass
     return render_template('show-origin.html', origin=origin, coffees=coffees)
@@ -66,8 +66,8 @@ def addCoffeeFrom(origin_id):
             return redirect(url_for('showCoffeeFrom', origin_id=origin_id))
         except:
             newCoffee = Coffee(name=request.form['new-coffee'],
-            description=request.form['coffee-description'],
-            origin_id=origin_id)
+                               description=request.form['coffee-description'],
+                               origin_id=origin_id)
             session.add(newCoffee)
             session.commit()
             return redirect(url_for('showCoffeeFrom', origin_id=origin_id))
@@ -82,8 +82,8 @@ def addCoffee():
         origin = session.query(Origin).filter_by(
             name=request.form['selected-origin']).one()
         newCoffee = Coffee(name=request.form['new-coffee'],
-                            description=request.form['coffee-description'],
-                            origin_id=origin.id)
+                           description=request.form['coffee-description'],
+                           origin_id=origin.id)
         session.add(newCoffee)
         session.commit()
         return redirect(url_for('showHomePage'))
@@ -116,6 +116,7 @@ def deleteCoffeeToHome(coffee_id):
         return redirect(url_for('showHomePage'))
     return render_template('delete-coffee.html', coffee=coffee)
 
+
 @app.route('/edit-coffee/<int:coffee_id>', methods=['GET', 'POST'])
 def editCoffee(coffee_id):
     coffee = session.query(Coffee).filter_by(id=coffee_id).one()
@@ -129,8 +130,8 @@ def editCoffee(coffee_id):
             coffee.description = new_descript
         return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
     return render_template('edit-coffee-redirect-to-list.html',
-        coffee=coffee,
-        origin=origin)
+                           coffee=coffee,
+                           origin=origin)
 
 
 @app.route('/edit-single-coffee/<int:coffee_id>', methods=['GET', 'POST'])
@@ -155,8 +156,8 @@ def deleteOrigin(origin_id):
         session.commit()
         return redirect(url_for('showHomePage'))
     return render_template('delete-origin.html',
-    origin=origin,
-    coffees=coffees)
+                           origin=origin,
+                           coffees=coffees)
 
 
 @app.route('/edit-origin-name/<int:origin_id>', methods=['GET', 'POST'])
@@ -168,10 +169,34 @@ def editOriginName(origin_id):
         return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
     return render_template('edit-origin.html', origin=origin)
 
-# # JSONIFY
-# @app.route('/show-coffee/<int:coffee_id>/JSON', methods=['GET'])
-# def coffeeJSON(coffee_id):
-#
+
+# JSONIFY
+# JSON for all Coffees
+@app.route('/show-coffees/JSON', methods=['GET'])
+def coffeesJSON():
+    coffees = session.query(Coffee).all()
+    return jsonify(coffees=[c.serialize for c in coffees])
+
+
+# JSON for a Coffee
+@app.route('/show-coffee/<int:coffee_id>/JSON', methods=['GET'])
+def coffeeJSON(coffee_id):
+    coffee = session.query(Coffee).filter_by(id=coffee_id).one()
+    return jsonify(coffee=coffee.serialize)
+
+
+# JSON for all Origins
+@app.route('/show-origins/JSON', methods=['GET'])
+def originsJSON():
+    origins = session.query(Origin).all()
+    return jsonify(origins=[o.serialize for o in origins])
+
+
+# JSON for all Coffees for an Origin
+@app.route('/show-coffees-from/<int:origin_id>/JSON', methods=['GET'])
+def coffeesFromOriginJSON(origin_id):
+    coffees = session.query(Coffee).filter_by(origin_id=origin_id)
+    return jsonify(coffees=[c.serialize for c in coffees])
 
 
 if __name__ == '__main__':
