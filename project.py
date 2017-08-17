@@ -120,7 +120,9 @@ def editCoffee(coffee_id):
         if new_descript:
             coffee.description = new_descript
         return redirect(url_for('showOrigin', origin_id=origin.id))
-    return render_template('edit-coffee.html', coffee=coffee, origin=origin)
+    return render_template('edit-coffee-redirect-to-list.html',
+        coffee=coffee,
+        origin=origin)
 
 @app.route('/edit-single-coffee/<int:coffee_id>', methods=['GET', 'POST'])
 def editSingleCoffee(coffee_id):
