@@ -29,7 +29,7 @@
         <a href="{{ url_for('addOrigin') }}" class="main-button"><h3>Add Coffee Origin</h3></a>
         <ul>
           {% for origin in origins %}
-          <li><a href="{{ url_for('showOrigin', origin_id=origin.id) }}">{{ origin.name }}</a></li>
+          <li><a href="{{ url_for('showCoffeeFrom', origin_id=origin.id) }}">{{ origin.name }}</a></li>
           {% endfor %}
         </ul>
       </section>

@@ -63,14 +63,14 @@ def addCoffeeFrom(origin_id):
             session.query(Coffee).filter_by(origin_id=origin_id,
                                             name=request.form['new-coffee']
                                             ).one()
-            return redirect(url_for('showOrigin', origin_id=origin_id))
+            return redirect(url_for('showCoffeeFrom', origin_id=origin_id))
         except:
             newCoffee = Coffee(name=request.form['new-coffee'],
             description=request.form['coffee-description'],
             origin_id=origin_id)
             session.add(newCoffee)
             session.commit()
-            return redirect(url_for('showOrigin', origin_id=origin_id))
+            return redirect(url_for('showCoffeeFrom', origin_id=origin_id))
 
     return render_template('add-coffee-from.html', origin=origin)
 
@@ -103,7 +103,7 @@ def deleteCoffee(coffee_id):
     if request.method == 'POST':
         session.delete(coffee)
         session.commit()
-        return redirect(url_for('showOrigin', origin_id=coffee.origin_id))
+        return redirect(url_for('showCoffeeFrom', origin_id=coffee.origin_id))
     return render_template('delete-coffee-from-list.html', coffee=coffee)
 
 
@@ -127,7 +127,7 @@ def editCoffee(coffee_id):
             coffee.name = new_name
         if new_descript:
             coffee.description = new_descript
-        return redirect(url_for('showOrigin', origin_id=origin.id))
+        return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
     return render_template('edit-coffee-redirect-to-list.html',
         coffee=coffee,
         origin=origin)
@@ -165,13 +165,13 @@ def editOriginName(origin_id):
     if request.method == 'POST':
         origin.name = request.form['origin-edit']
         session.commit()
-        return redirect(url_for('showOrigin', origin_id=origin.id))
+        return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
     return render_template('edit-origin.html', origin=origin)
 
-# JSONIFY
-@app.route('/show-coffee/<int:coffee_id>/JSON', methods=['GET'])
-def coffeeJSON(coffee_id):
-
+# # JSONIFY
+# @app.route('/show-coffee/<int:coffee_id>/JSON', methods=['GET'])
+# def coffeeJSON(coffee_id):
+#
 
 
 if __name__ == '__main__':
