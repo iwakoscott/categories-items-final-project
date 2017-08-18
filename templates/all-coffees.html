@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+{% block title %}All Coffees{% endblock %}
+
+{% block content %}
+<h1>All Coffees</h1>
+
+{% for coffee in coffees %}
+  <h2>{{ coffee.name }}</h2>
+  <p class="coffee-description">{{coffee.description}}</p>
+  <a href="{{url_for('editSingleCoffee', coffee_id=coffee.id)}}">edit</a> | <a href="{{url_for('deleteCoffeeToHome', coffee_id=coffee.id)}}">delete</a>
+{% endfor %}
+<br /><br />
+<a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+{% endblock %}
