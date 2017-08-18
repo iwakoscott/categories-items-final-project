@@ -25,7 +25,7 @@ import requests
 app = Flask(__name__)
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///coffee.db')
+engine = create_engine('sqlite:///coffeewithusers.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
