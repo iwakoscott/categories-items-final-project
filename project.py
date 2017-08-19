@@ -9,7 +9,7 @@ from flask import url_for
 from flask import flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Coffee, Origin
+from database_setup import Base, Coffee, Origin, User
 # client secret
 from flask import session as login_session
 import random
@@ -97,8 +97,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        dump = json.dumps('<p>Current user is already connected.</p>')
+        response = make_response(dump, 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
