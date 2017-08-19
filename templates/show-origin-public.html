@@ -1,0 +1,21 @@
+{% extends "main-public.html" %}
+{% block title %}{{ origin.name }}{% endblock %}
+{% block profile %}{% endblock %}
+
+{% block content %}
+<h2 class="sub-header">{{ origin.name }}</h2>
+<ul>
+  {% for coffee in coffees %}
+  <li><h2>{{ coffee.name }}</h2></li>
+    <p class="coffee-description">
+      {{coffee.description}}
+      <h5>Author: {{ getUsersName(coffee.user_id) }} </h5>
+    </p>
+  {% endfor %}
+</ul>
+
+<footer class="block">
+    <a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+</footer>
+
+{% endblock %}

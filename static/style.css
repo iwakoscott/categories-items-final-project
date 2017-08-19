@@ -7,6 +7,7 @@ header {
   background-color:  #eaddb2;
   box-shadow: 5px 5px 5px grey;
   border-radius: 15px;
+  overflow: hidden;
 }
 
 .content {
@@ -30,7 +31,7 @@ header, h1, h2, h4 {
   font-family: 'Bungee Inline', cursive;
 }
 
-a, .coffee-description, p {
+a, .coffee-description, p, h5 {
   font-family: 'Comfortaa', cursive;
 }
 
@@ -51,11 +52,10 @@ body {
   background-color: #f2f2f2;
 }
 
-.login-button {
-  text-align: center;
-  width: 300px;
-  margin-left: auto;
-  margin-bottom: auto;
+.login-button, .logout-button {
+  max-width: 300px;
+  float: right;
+  padding: 15px;
 }
 
 .main-title-heading {
@@ -65,9 +65,6 @@ body {
 
 .nav {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
 }
 
 .main-title-heading, .login-button {
@@ -77,7 +74,7 @@ body {
   opacity: 50%;
 }
 
-.login-link, .logo-link {
+.login-link, .logo-link, .logout-link {
   text-decoration: none;
   color: black;
 }
@@ -109,4 +106,21 @@ a {
 
 #signInButton {
   margin: 15px;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+}
+
+.profile {
+  width: 50%;
+  float: left;
+  margin: 10px;
+}
+
+.logout-button {
+  display: inline-block;
+  float: right;
 }

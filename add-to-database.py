@@ -29,59 +29,6 @@ new_origin_8 = Origin(name='Costa Rica', user=new_user_1)
 session.add(new_origin_8)
 session.commit()
 
-new_origin_0 = Origin(name='Angola', user=new_user_1)
-session.add(new_origin_0)
-session.commit()
-
-new_origin_1 = Origin(name='Bolivia', user=new_user_1)
-session.add(new_origin_1)
-session.commit()
-
-new_origin_2 = Origin(name='Brazil', user=new_user_1)
-session.add(new_origin_2)
-session.commit()
-
-new_origin_3 = Origin(name='Burundi', user=new_user_1)
-session.add(new_origin_3)
-session.commit()
-
-new_origin_4 = Origin(name='Cameroon', user=new_user_1)
-session.add(new_origin_4)
-session.commit()
-
-new_origin_5 = Origin(name='Central African Republic', user=new_user_1)
-session.add(new_origin_5)
-session.commit()
-
-new_origin_6 = Origin(name='China', user=new_user_1)
-session.add(new_origin_6)
-session.commit()
-
-new_origin_7 = Origin(name='Colombia', user=new_user_1)
-session.add(new_origin_7)
-session.commit()
-
-new_origin_8 = Origin(name='Costa Rica', user=new_user_1)
-session.add(new_origin_8)
-session.commit()
-
-new_origin_9 = Origin(name='Cuba', user=new_user_1)
-session.add(new_origin_9)
-session.commit()
-
-new_origin_10 = Origin(name='Democratic Republic of the Congo',
-                       user=new_user_1)
-session.add(new_origin_10)
-session.commit()
-
-new_origin_11 = Origin(name='Dominican Republic', user=new_user_1)
-session.add(new_origin_11)
-session.commit()
-
-new_origin_12 = Origin(name='Ecuador', user=new_user_1)
-session.add(new_origin_12)
-session.commit()
-
 new_origin_13 = Origin(name='El Salvador', user=new_user_1)
 session.add(new_origin_13)
 session.commit()

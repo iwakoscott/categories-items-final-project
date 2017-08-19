@@ -8,8 +8,15 @@
   <li><h2>{{ coffee.name }}</h2></li>
     <p class="coffee-description">
       {{coffee.description}}
+      {% if creator.id == coffee.user_id %}
+        <h5>Author: You</h5>
+      {% else %}
+        <h5>Author: {{ getUsersName(coffee.user_id) }} </h5>
+      {% endif %}
     </p>
-  <a href="{{ url_for('editCoffee', coffee_id=coffee.id) }}">edit</a> | <a href="{{url_for('deleteCoffee', coffee_id=coffee.id)}}">delete</a>
+    {% if creator.id == coffee.user_id %}
+      <a href="{{ url_for('editCoffee', coffee_id=coffee.id) }}">edit</a> | <a href="{{url_for('deleteCoffee', coffee_id=coffee.id)}}">delete</a>
+    {% endif %}
   {% endfor %}
 </ul>
 <a href="{{ url_for('addCoffeeFrom', origin_id=origin.id) }}" class="main-button"><h3>Add a Coffee</h3></a>

@@ -12,27 +12,18 @@
 
     <header>
       <ul class="nav-bar">
-        <li class="main-title-heading header-li">
-          <a class="logo-link" href="{{url_for('showHomePage')}}"><h1>The Coffee App</h1></a>
+        <li class="main-title-heading">
+          <a class="logo-link" href="{{url_for('showHomePage')}}"><h1>The Coffee App</h2></a>
         </li>
-        <li class="logout-button header-li">
-          <a class="logout-link" href="javascript:void(0);" onclick="javascript:window.location.href='{{url_for('gdisconnect')}}';"><h2>Log Out</h2></a>
+        <li class="login-button">
+          <a href="{{ url_for('showLogin') }}" class="login-link"><h2>Login</h2></a>
         </li>
       </ul>
-
-      {% block profile %}
-      <section class="profile">
-        <img class="profile-image" src="{{ creator.picture }}" alt="profile picture"/>
-        <h2>{{creator.name}}</h2>
-      </section>
-      {% endblock %}
-
     </header>
     <section class="content">
       {% block content %}
       <section class="coffee-origin">
         <h2 class="sub-header">Coffee Origins</h2>
-        <a href="{{ url_for('addOrigin') }}" class="main-button"><h3>Add Coffee Origin</h3></a>
         <ul>
           {% for origin in origins %}
           <li><a href="{{ url_for('showCoffeeFrom', origin_id=origin.id) }}">{{ origin.name }}</a></li>
@@ -42,7 +33,6 @@
 
        <section class="coffee">
          <h2 class="sub-header">Coffees</h2>
-         <a href="{{url_for('addCoffee')}}" class="main-button"><h3>Add Coffee</h3></a>
          <ul>
            {% for coffee in coffees %}
            <li><a href="{{ url_for('showCoffee', coffee_id=coffee.id) }}">{{ coffee.name }}</a></li>

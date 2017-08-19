@@ -158,6 +158,10 @@ def getUserID(email):
     except:
         return None
 
+def getUsersName(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user.name
+
 
 # DISCONNECT - Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
@@ -175,21 +179,18 @@ def gdisconnect():
 
     if result['status'] == '200':
         # Reset the user's sesson.
-        del login_session['access_token']
-        del login_session['gplus_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
+        for key in login_session.keys():
+            del login_session[key]
 
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        return redirect(url_for('showHomePage'))
     else:
         # For whatever reason, the given token was invalid.
         response = make_response(
             json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
-        return response
+        return redirect(url_for('showHomePage'))
 
 
 # Shows the main page
@@ -198,7 +199,17 @@ def gdisconnect():
 def showHomePage():
     origins = session.query(Origin).order_by('name').all()
     coffees = session.query(Coffee).order_by('name').all()
-    return render_template('main.html', origins=origins, coffees=coffees)
+
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('main.html',
+                                origins=origins,
+                                coffees=coffees,
+                                creator=creator)
+    except:
+        return render_template('main-public.html',
+                                origins=origins,
+                                coffees=coffees)
 
 
 # adds origin
@@ -214,7 +225,11 @@ def addOrigin():
             session.add(newOrigin)
             session.commit()
             return redirect(url_for('showHomePage'))
-    return render_template('add-origin.html')
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('add-origin.html', creator=creator)
+    except:
+        return redirect(url_for('showLogin'))
 
 
 # show coffes from a particular region
@@ -223,9 +238,18 @@ def showCoffeeFrom(origin_id):
     origin = session.query(Origin).filter_by(id=origin_id).one()
     coffees_query = session.query(Coffee).filter_by(origin_id=origin_id)
     coffees = coffees_query.order_by('name').all()
-    if request.method == 'POST':
-        pass
-    return render_template('show-origin.html', origin=origin, coffees=coffees)
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('show-origin.html',
+                               origin=origin,
+                               coffees=coffees,
+                               creator=creator,
+                               getUsersName=getUsersName)
+    except:
+        return render_template('show-origin-public.html',
+                               origin=origin,
+                               coffees=coffees,
+                               getUsersName=getUsersName)
 
 
 # adds coffee from a fixed origin
@@ -241,12 +265,19 @@ def addCoffeeFrom(origin_id):
         except:
             newCoffee = Coffee(name=request.form['new-coffee'],
                                description=request.form['coffee-description'],
-                               origin_id=origin_id)
+                               origin_id=origin_id,
+                               user_id=login_session['user_id'])
             session.add(newCoffee)
             session.commit()
             return redirect(url_for('showCoffeeFrom', origin_id=origin_id))
 
-    return render_template('add-coffee-from.html', origin=origin)
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('add-coffee-from.html',
+                               origin=origin,
+                               creator=creator)
+    except:
+        return redirect(url_for('showLogin'))
 
 
 # adds a coffee from a user selected origin
@@ -270,7 +301,16 @@ def addCoffee():
 def showCoffee(coffee_id):
     coffee = session.query(Coffee).filter_by(id=coffee_id).one()
     origin = session.query(Origin).filter_by(id=coffee.origin_id).one()
-    return render_template('show-coffee.html', coffee=coffee, origin=origin)
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('show-coffee.html',
+                               coffee=coffee,
+                               origin=origin,
+                               creator=creator)
+    except:
+        return render_template('show-coffee-public.html',
+                               coffee=coffee,
+                               origin=origin)
 
 
 # shows all coffee from an origin
