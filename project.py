@@ -415,7 +415,8 @@ def editCoffee(coffee_id):
         if is_op:
             return render_template('edit-coffee-redirect-to-list.html',
                                    coffee=coffee,
-                                   origin=origin)
+                                   origin=origin,
+                                   creator=creator)
         else:
             return """<script>
                       alert('You are not authorized to edit this post.');
