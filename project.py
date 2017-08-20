@@ -177,6 +177,8 @@ def gdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
 
+    print result
+
     if result['status'] == '200':
         # Reset the user's sesson.
         for key in login_session.keys():
@@ -187,6 +189,8 @@ def gdisconnect():
         return redirect(url_for('showHomePage'))
     else:
         # For whatever reason, the given token was invalid.
+        for key in login_session.keys():
+            del login_session[key]
         response = make_response(
             json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
@@ -221,7 +225,8 @@ def addOrigin():
             session.query(Origin).filter_by(name=new_origin).one()
             return redirect(url_for('showHomePage'))
         except:
-            newOrigin = Origin(name=new_origin)
+            newOrigin = Origin(name=new_origin,
+                               user_id=login_session['user_id'])
             session.add(newOrigin)
             session.commit()
             return redirect(url_for('showHomePage'))
@@ -229,7 +234,10 @@ def addOrigin():
         creator = getUserInfo(login_session['user_id'])
         return render_template('add-origin.html', creator=creator)
     except:
-        return redirect(url_for('showLogin'))
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 
 # show coffes from a particular region
@@ -277,23 +285,35 @@ def addCoffeeFrom(origin_id):
                                origin=origin,
                                creator=creator)
     except:
-        return redirect(url_for('showLogin'))
-
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 # adds a coffee from a user selected origin
 @app.route('/add-coffee', methods=['GET', 'POST'])
 def addCoffee():
-    origins = session.query(Origin).all()
+    origins = session.query(Origin).order_by('name').all()
     if request.method == 'POST':
         origin = session.query(Origin).filter_by(
             name=request.form['selected-origin']).one()
         newCoffee = Coffee(name=request.form['new-coffee'],
                            description=request.form['coffee-description'],
-                           origin_id=origin.id)
+                           origin_id=origin.id,
+                           user_id=login_session['user_id'])
         session.add(newCoffee)
         session.commit()
         return redirect(url_for('showHomePage'))
-    return render_template('add-coffee.html', origins=origins)
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        return render_template('add-coffee.html',
+                               origins=origins,
+                               creator=creator)
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 
 # shows a coffee
@@ -306,11 +326,13 @@ def showCoffee(coffee_id):
         return render_template('show-coffee.html',
                                coffee=coffee,
                                origin=origin,
-                               creator=creator)
+                               creator=creator,
+                               getUsersName=getUsersName)
     except:
         return render_template('show-coffee-public.html',
                                coffee=coffee,
-                               origin=origin)
+                               origin=origin,
+                               getUsersName=getUsersName)
 
 
 # shows all coffee from an origin
@@ -321,7 +343,25 @@ def deleteCoffee(coffee_id):
         session.delete(coffee)
         session.commit()
         return redirect(url_for('showCoffeeFrom', origin_id=coffee.origin_id))
-    return render_template('delete-coffee-from-list.html', coffee=coffee)
+
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = coffee.user_id == login_session['user_id']
+        if is_op:
+            return render_template('delete-coffee-from-list.html',
+                               coffee=coffee,
+                               creator=creator)
+        else:
+            return """<script>
+                      alert('You are not authorized to delete this post.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 
 # deletes a coffee
@@ -332,7 +372,25 @@ def deleteCoffeeToHome(coffee_id):
         session.delete(coffee)
         session.commit()
         return redirect(url_for('showHomePage'))
-    return render_template('delete-coffee.html', coffee=coffee)
+
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = coffee.user_id == login_session['user_id']
+        if is_op:
+            return render_template('delete-coffee.html',
+                                   coffee=coffee,
+                                   creator=creator)
+        else:
+            return """<script>
+                      alert('You are not authorized to delete this post.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 
 # edit coffee
@@ -348,10 +406,25 @@ def editCoffee(coffee_id):
         if new_descript:
             coffee.description = new_descript
         return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
-    return render_template('edit-coffee-redirect-to-list.html',
-                           coffee=coffee,
-                           origin=origin)
 
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = coffee.user_id == login_session['user_id']
+        if is_op:
+            return render_template('edit-coffee-redirect-to-list.html',
+                                   coffee=coffee,
+                                   origin=origin)
+        else:
+            return """<script>
+                      alert('You are not authorized to edit this post.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 # edit a coffee from a page dedicated to that coffee
 @app.route('/edit-single-coffee/<int:coffee_id>', methods=['GET', 'POST'])
@@ -362,7 +435,27 @@ def editSingleCoffee(coffee_id):
         coffee.name = request.form['edit-coffee']
         session.commit()
         return redirect(url_for('showCoffee', coffee_id=coffee.id))
-    return render_template('edit-coffee.html', coffee=coffee, origin=origin)
+
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = coffee.user_id == login_session['user_id']
+        if is_op:
+            return render_template('edit-coffee.html',
+                                   coffee=coffee,
+                                   origin=origin,
+                                   creator=creator)
+        else:
+            return """<script>
+                      alert('You are not authorized to edit this post.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
+
 
 
 # delete an entire origin and all coffees from that origin
@@ -376,10 +469,26 @@ def deleteOrigin(origin_id):
             session.delete(coffee)
         session.commit()
         return redirect(url_for('showHomePage'))
-    return render_template('delete-origin.html',
-                           origin=origin,
-                           coffees=coffees)
 
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = origin.user_id == login_session['user_id']
+        if is_op:
+            return render_template('delete-origin.html',
+                                   origin=origin,
+                                   coffees=coffees,
+                                   creator=creator)
+        else:
+            return """<script>
+                      alert('You are not authorized to delete this origin.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 # edit origin name
 @app.route('/edit-origin-name/<int:origin_id>', methods=['GET', 'POST'])
@@ -389,7 +498,24 @@ def editOriginName(origin_id):
         origin.name = request.form['origin-edit']
         session.commit()
         return redirect(url_for('showCoffeeFrom', origin_id=origin.id))
-    return render_template('edit-origin.html', origin=origin)
+    try:
+        creator = getUserInfo(login_session['user_id'])
+        is_op = origin.user_id == login_session['user_id']
+        if is_op:
+            return render_template('edit-origin.html',
+                                   origin=origin,
+                                   creator=creator)
+        else:
+            return """<script>
+                      alert('You are not authorized to edit this post.');
+                      window.location.href="/home";
+                      </script>
+                      """
+    except:
+        return """<script>
+                  alert('Please log in to access this feature');
+                  window.location.href="/home";
+                  </script>"""
 
 
 # JSONIFY

@@ -23,8 +23,10 @@
 
 <footer class="block">
     <a href="{{ url_for('showHomePage') }}" class="back-button">back</a>
+    {% if origin.user_id == creator.id %}
     <a href="{{ url_for('deleteOrigin', origin_id=origin.id) }}" class="button">delete origin</a>
     <a href="{{ url_for('editOriginName', origin_id=origin.id) }}">edit origin name</a>
+    {% endif %}
 </footer>
 
 {% endblock %}

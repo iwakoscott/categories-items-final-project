@@ -3,7 +3,15 @@
 
 {% block content %}
 <h2 class="sub-header">{{ origin.name }}: {{ coffee.name }}</h2>
-<p class="coffee-description">{{coffee.description}}</p>
+<p class="coffee-description">{{coffee.description}}
+  {{coffee.description}}
+  {% if creator.id == coffee.user_id %}
+    <h5>Author: You</h5>
+  {% else %}
+    <h5>Author: {{ getUsersName(coffee.user_id) }} </h5>
+  {% endif %}
+</p>
+
 {% if creator.id == coffee.user_id %}
   <a href="{{url_for('editSingleCoffee', coffee_id=coffee.id)}}">edit</a> | <a href="{{url_for('deleteCoffeeToHome', coffee_id=coffee.id)}}">delete</a>
 {% endif %}
