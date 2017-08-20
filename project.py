@@ -35,6 +35,7 @@ CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "The Coffee App"
 
+
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
@@ -122,15 +123,14 @@ def gconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
-
-
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ''' " style = "width: 300px; height: 300px;border-radius:150px;
+              -webkit-border-radius: 150px;-moz-border-radius: 150px;"> '''
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
@@ -157,6 +157,7 @@ def getUserID(email):
         return user.id
     except:
         return None
+
 
 def getUsersName(user_id):
     user = session.query(User).filter_by(id=user_id).one()
@@ -207,13 +208,13 @@ def showHomePage():
     try:
         creator = getUserInfo(login_session['user_id'])
         return render_template('main.html',
-                                origins=origins,
-                                coffees=coffees,
-                                creator=creator)
+                               origins=origins,
+                               coffees=coffees,
+                               creator=creator)
     except:
         return render_template('main-public.html',
-                                origins=origins,
-                                coffees=coffees)
+                               origins=origins,
+                               coffees=coffees)
 
 
 # adds origin
@@ -290,6 +291,7 @@ def addCoffeeFrom(origin_id):
                   window.location.href="/home";
                   </script>"""
 
+
 # adds a coffee from a user selected origin
 @app.route('/add-coffee', methods=['GET', 'POST'])
 def addCoffee():
@@ -349,8 +351,8 @@ def deleteCoffee(coffee_id):
         is_op = coffee.user_id == login_session['user_id']
         if is_op:
             return render_template('delete-coffee-from-list.html',
-                               coffee=coffee,
-                               creator=creator)
+                                   coffee=coffee,
+                                   creator=creator)
         else:
             return """<script>
                       alert('You are not authorized to delete this post.');
@@ -426,6 +428,7 @@ def editCoffee(coffee_id):
                   window.location.href="/home";
                   </script>"""
 
+
 # edit a coffee from a page dedicated to that coffee
 @app.route('/edit-single-coffee/<int:coffee_id>', methods=['GET', 'POST'])
 def editSingleCoffee(coffee_id):
@@ -455,7 +458,6 @@ def editSingleCoffee(coffee_id):
                   alert('Please log in to access this feature');
                   window.location.href="/home";
                   </script>"""
-
 
 
 # delete an entire origin and all coffees from that origin
@@ -489,6 +491,7 @@ def deleteOrigin(origin_id):
                   alert('Please log in to access this feature');
                   window.location.href="/home";
                   </script>"""
+
 
 # edit origin name
 @app.route('/edit-origin-name/<int:origin_id>', methods=['GET', 'POST'])
